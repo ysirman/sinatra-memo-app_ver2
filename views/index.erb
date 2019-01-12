@@ -1,0 +1,25 @@
+<a class="btn btn-primary memo-button sticky-top" href="/new"><i class="fas fa-pen"></i> メモ追加</a>
+<div class="card-columns">
+<% @memo_datas.each do |key, value| %>
+    <a href="/show/<%= key %>">
+    <div class="card border-secondary mb-3">
+      <h5 class="card-header">
+        <% if value["title"].size > 7 %>
+          <%= value["title"][0..6] %>...
+        <% else %>
+          <%= value["title"] %>
+        <% end %>
+      </h5>
+      <div class="card-body">
+        <p class="card-text">
+          <% if value["memo"].size > 9 %>
+            <%= value["memo"][0..8] %>...
+          <% else %>
+            <%= value["memo"] %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+    </a>
+<% end %>
+</div>

@@ -1,0 +1,13 @@
+<div class="card border-secondary mb-3">
+  <h5 class="card-header"><%= @memo_data["title"] %></h5>
+  <div class="card-body">
+    <p class="card-text"><%= @memo_data["memo"] %></p>
+  </div>
+</div>
+
+<form method="post" action="/destroy/<%= @id %>" name="destory">
+  <input type="hidden" name="_method" value="DELETE">
+  <a class="btn btn-secondary" href="/edit/<%= @id %>"><i class="fas fa-edit"></i> 変更</a>
+  <button class="btn btn-danger" type="submit" onClick="return confirm('本当に削除しますか？');"><i class="fas fa-trash-alt"></i> 削除</button>
+  <a class="btn btn-warning" href="/"><i class="fas fa-times"></i> キャンセル</a>
+</form>
