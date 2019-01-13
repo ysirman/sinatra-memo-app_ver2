@@ -1,7 +1,7 @@
 require "sinatra"
 require "sinatra/reloader"
 require "json"
-require 'rack-flash'
+require "rack-flash"
 
 enable :sessions
 use Rack::Flash
@@ -27,15 +27,6 @@ def write_data(file_path, memo_datas)
   end
 end
 
-# 1行目：タイトル
-# 2行目以降：メモ内容
-def split_memo(memo_data)
-	match_data = memo_data.match(/(.*)\s?([\s\S]*)/)
-	title = match_data[1]
-	memo = match_data[2]
-	return title, memo
-end
-
 
 ["/show/:id", "/destroy/:id", "/edit/:id"].each do |path|
   before path do
@@ -47,7 +38,7 @@ end
 end
 
 get "/" do
-  @flash = flash[:notice] ? flash[:notice] : nil
+  @flash = flash[:notice]
   @memo_datas = get_data(file_path)
   @memo_datas = @memo_datas.sort.reverse.to_h
   erb :index
@@ -65,10 +56,9 @@ post "/new" do
   else
     new_id = (@memo_datas.keys.map(&:to_i).sort.last + 1).to_s
   end
-	# 改行を変換してから出力
-	title, memo = split_memo(params[:memo])
-  memo = memo.gsub(/\r\n|\r|\n/, "<br />")
-  @memo_datas.store(new_id, "title" => title, "memo" => memo)
+  # 改行を変換してから出力
+  memo = params[:memo].gsub(/\r\n|\r|\n/, "<br />")
+  @memo_datas.store(new_id, "memo" => memo)
   write_data(file_path, @memo_datas)
   # トップページへ遷移
   flash[:notice] = "メモを作成しました。"
@@ -90,14 +80,14 @@ end
 
 get "/edit/:id" do
   @memo_data = @memo_datas[params[:id]]
+  @memo_data = @memo_data["memo"].gsub("<br />", "\r")
   @id = params[:id]
   erb :edit
 end
 
 patch "/edit/:id" do
-	title, memo = split_memo(params[:memo])
-  @memo_datas[params[:id]]["title"] = title
-  @memo_datas[params[:id]]["memo"] = memo.gsub(/\r\n|\r|\n/, "<br />")
+  memo = params[:memo].gsub(/\r\n|\r|\n/, "<br />")
+  @memo_datas[params[:id]]["memo"] = memo
   write_data(file_path, @memo_datas)
   flash[:notice] = "メモが変更されました。"
   redirect "/"

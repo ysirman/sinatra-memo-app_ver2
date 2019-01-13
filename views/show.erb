@@ -1,8 +1,7 @@
-<div class="card border-secondary mb-3">
-  <h5 class="card-header"><%= @memo_data["title"] %></h5>
-  <div class="card-body">
-    <p class="card-text"><%= @memo_data["memo"] %></p>
-  </div>
+<div class="card mb-3">
+  <p class="card-body">
+    <%= @memo_data["memo"] %>
+  </p>
 </div>
 
 <form method="post" action="/destroy/<%= @id %>" name="destory">
