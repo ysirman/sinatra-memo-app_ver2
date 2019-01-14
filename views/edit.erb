@@ -5,5 +5,5 @@
     <textarea class="form-control" name="memo" placeholder="明日の買い物&#13;&#10;野菜と果物を買いに行く。" required><%= @memo_data %></textarea>
   </div>
   <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> 保存</button>
-  <a class="btn btn-warning" href="/show/<%= @id %>"><i class="fas fa-times"></i> キャンセル</a>
+  <a class="btn btn-warning" href="/memos/<%= @id %>"><i class="fas fa-times"></i> キャンセル</a>
 </form>

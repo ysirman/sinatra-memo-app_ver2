@@ -1,7 +1,7 @@
 <a class="btn btn-primary memo-button sticky-top" href="/new"><i class="fas fa-pen"></i> メモ追加</a>
 <ul class="list-group">
 <% @memo_datas.each do |key, val| %>
-  <a href="/show/<%= key %>">
+  <a href="/memos/<%= key %>">
     <li class="list-group-item text-truncate">
       <% if val["memo"].match(/^(.*?)<br \/>?/) %>
         <%= val["memo"].match(/^(.*?)<br \/>?/)[1] %>

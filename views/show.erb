@@ -4,7 +4,7 @@
   </p>
 </div>
 
-<form method="post" action="/destroy/<%= @id %>" name="destory">
+<form method="post" action="/delete/<%= @id %>" name="delete">
   <input type="hidden" name="_method" value="DELETE">
   <a class="btn btn-secondary" href="/edit/<%= @id %>"><i class="fas fa-edit"></i> 変更</a>
   <button class="btn btn-danger" type="submit" onClick="return confirm('本当に削除しますか？');"><i class="fas fa-trash-alt"></i> 削除</button>
