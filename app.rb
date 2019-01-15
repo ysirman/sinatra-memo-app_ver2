@@ -28,7 +28,7 @@ def write_data(file_path, memo_datas)
 end
 
 
-["/memos/:id", "/delete/:id", "/edit/:id"].each do |path|
+["/memos/:id", "/edit/:id"].each do |path|
   before path do
     @memo_datas = get_data(FILE_PATH)
     if @memo_datas[params[:id]].nil?
@@ -71,7 +71,7 @@ get "/memos/:id" do
   erb :show
 end
 
-delete "/delete/:id" do
+delete "/memos/:id" do
   @memo_datas.delete("#{params[:id]}")
   write_data(FILE_PATH, @memo_datas)
   flash[:notice] = "メモを削除しました。"
