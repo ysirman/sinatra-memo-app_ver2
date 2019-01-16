@@ -6,7 +6,7 @@ require "rack-flash"
 enable :sessions
 use Rack::Flash
 
-file_path = "memo.json"
+FILE_PATH = "memos.json"
 
 # ファイルの読み込み
 def get_data(file_path)
@@ -28,9 +28,9 @@ def write_data(file_path, memo_datas)
 end
 
 
-["/show/:id", "/destroy/:id", "/edit/:id"].each do |path|
+["/memos/:id", "/edit/:id"].each do |path|
   before path do
-    @memo_datas = get_data(file_path)
+    @memo_datas = get_data(FILE_PATH)
     if @memo_datas[params[:id]].nil?
       not_found
     end
@@ -39,7 +39,7 @@ end
 
 get "/" do
   @flash = flash[:notice]
-  @memo_datas = get_data(file_path)
+  @memo_datas = get_data(FILE_PATH)
   @memo_datas = @memo_datas.sort.reverse.to_h
   erb :index
 end
@@ -49,7 +49,7 @@ get "/new" do
 end
 
 post "/new" do
-  @memo_datas = get_data(file_path)
+  @memo_datas = get_data(FILE_PATH)
   # id取得
   if @memo_datas.empty?
     new_id = "1"
@@ -59,21 +59,21 @@ post "/new" do
   # 改行を変換してから出力
   memo = params[:memo].gsub(/\r\n|\r|\n/, "<br />")
   @memo_datas.store(new_id, "memo" => memo)
-  write_data(file_path, @memo_datas)
+  write_data(FILE_PATH, @memo_datas)
   # トップページへ遷移
   flash[:notice] = "メモを作成しました。"
   redirect "/"
 end
 
-get "/show/:id" do
+get "/memos/:id" do
   @memo_data = @memo_datas[params[:id]]
   @id = params[:id]
   erb :show
 end
 
-delete "/destroy/:id" do
+delete "/memos/:id" do
   @memo_datas.delete("#{params[:id]}")
-  write_data(file_path, @memo_datas)
+  write_data(FILE_PATH, @memo_datas)
   flash[:notice] = "メモを削除しました。"
   redirect "/"
 end
@@ -88,7 +88,7 @@ end
 patch "/edit/:id" do
   memo = params[:memo].gsub(/\r\n|\r|\n/, "<br />")
   @memo_datas[params[:id]]["memo"] = memo
-  write_data(file_path, @memo_datas)
+  write_data(FILE_PATH, @memo_datas)
   flash[:notice] = "メモが変更されました。"
   redirect "/"
 end
